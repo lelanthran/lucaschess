@@ -181,7 +181,7 @@ class WEntrenarBMT(QTVarios.WDialogo):
 
         # BT posiciones ---------------------------------------------------------------
         self.liBT = []
-        nSalto = (self.tablero.ancho + 20) / 22
+        nSalto = (self.tablero.ancho + 34) / 26
         self.dicIconos = {0: Iconos.PuntoBlanco(),
                           1: Iconos.PuntoNegro(), 2: Iconos.PuntoAmarillo(),
                           3: Iconos.PuntoNaranja(), 4: Iconos.PuntoVerde(),
@@ -217,7 +217,7 @@ class WEntrenarBMT(QTVarios.WDialogo):
         lyRM = Colocacion.G()
         numero = 0
         for x in range(16):
-            btRM = Controles.PB(self, "", rutina=self.pulsadoRM).anchoFijo(120).altoFijo(24).ponPlano(True)
+            btRM = Controles.PB(self, "", rutina=self.pulsadoRM).anchoFijo(180).altoFijo(24).ponPlano(True)
             btRM.numero = numero
             btRM.setEnabled(False)
             numero += 1
@@ -592,17 +592,53 @@ class WEntrenarBMT(QTVarios.WDialogo):
         self.finalizaTiempo()  # Para que guarde el tiempo, si no es el primero
 
         self.bmt_uno = bmt_uno = self.bmt_lista.dameUno(num)
-
-        self.lbCondiciones.ponTexto(bmt_uno.mrm.nombre + " %d %s" % (bmt_uno.mrm.maxTiempo / 1000, _("Second(s)")))
+        mrm = bmt_uno.mrm
+        tm = mrm.maxTiempo
+        dp = mrm.maxProfundidad
+        if tm > 0:
+            txt = " %d %s" % (tm / 1000, _("Second(s)"))
+        elif dp > 0:
+            txt = " %s %d" % (_("depth"), dp)
+        else:
+            txt = ""
 
         self.posicion.leeFen(bmt_uno.fen)
+
+        mens = ""
+        if self.posicion.enroques:
+            color, colorR = _("White"), _("Black")
+            cK, cQ, cKR, cQR = "K", "Q", "k", "q"
+
+            def menr(ck, cq):
+                enr = ""
+                if ck in self.posicion.enroques:
+                    enr += "O-O"
+                if cq in self.posicion.enroques:
+                    if enr:
+                        enr += "  +  "
+                    enr += "O-O-O"
+                return enr
+
+            enr = menr(cK, cQ)
+            if enr:
+                mens += "  %s : %s" % (color, enr)
+            enr = menr(cKR, cQR)
+            if enr:
+                mens += " %s : %s" % (colorR, enr)
+        if self.posicion.alPaso != "-":
+            mens += "     %s : %s" % (_("En passant"), self.posicion.alPaso)
+
+        if mens:
+            txt += "  - " + mens
+
+        self.lbCondiciones.ponTexto(mrm.nombre + txt )
+
         self.tablero.ponPosicion(self.posicion)
 
         self.liBT[self.actualP].ponPlano(True)
         self.liBT[num].ponPlano(False)
         self.actualP = num
 
-        mrm = bmt_uno.mrm
         nliRM = len(mrm.liMultiPV)
         partida = Partida.Partida()
         for x in range(16):

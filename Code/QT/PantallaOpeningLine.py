@@ -2,7 +2,7 @@ import os
 import os.path
 import copy
 
-import LCEngine3 as LCEngine
+import LCEngine4 as LCEngine
 
 from PyQt4 import QtCore, QtGui
 
@@ -121,7 +121,6 @@ class WLines(QTVarios.WDialogo):
                     self.dbop.exportarPGN(ws, resp)
                     ws.close()
                     ws.um_final()
-
 
     def utilidades(self):
         menu = QTVarios.LCMenu(self)
@@ -1000,7 +999,6 @@ class WLines(QTVarios.WDialogo):
                     else:
                         for nl in dicPV[pv]:
                             st_borrar.add(nl)
-
 
             tmpBP.cerrar()
 

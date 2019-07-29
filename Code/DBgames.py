@@ -4,7 +4,7 @@ import sqlite3
 import time
 import random
 
-import LCEngine3 as LCEngine
+import LCEngine4 as LCEngine
 
 from Code import ControlPosicion
 from Code import Partida
@@ -1320,7 +1320,7 @@ class DBgames:
     #     cursor = conexion.cursor()
     #     cursor.execute(sql)
     #     return conexion, cursor
-    #
+
     # def genPGN(self, cursor):
     #     dicCampoPos = {campo:pos for pos, campo in enumerate(self.liCamposAll)}
     #     posPGN = dicCampoPos["PGN"]
@@ -1352,13 +1352,13 @@ class DBgames:
     #         if rtags:
     #             for k, v in rtags:
     #                  litags.append('[%s "%s"]' % (k, v))
-    #
+
     #         tags = "\n".join(litags)
     #         tags += "\n\n"
-    #
+
     #         pgn = "%s\n\n%s" % (tags, pgn)
     #         yield pgn, result
-    #
+
     # def genPGNclose(self, conexion, cursor):
     #     cursor.close()
     #     conexion.close()
